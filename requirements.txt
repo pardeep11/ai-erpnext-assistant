@@ -1,0 +1,18 @@
+# LangGraph
+langgraph
+
+# Ollama / LangChain integration
+langchain-ollama
+
+# FastAPI
+fastapi
+uvicorn[standard]
+
+# ERPNext REST API
+httpx
+
+# Environment variables
+python-dotenv
+#
+
+requests
