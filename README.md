@@ -1,8 +1,8 @@
 # AI ERPNext Business Assistant
 
-An AI-powered business assistant that connects with ERPNext and uses **LangGraph Reflection** to analyze and review sales order information.
+An AI-powered business assistant that connects to **ERPNext** and uses **LangGraph Reflection** to analyze, review, and improve sales-order responses.
 
-## Current Implementation
+## Architecture
 
 ```text
 ERPNext
@@ -23,39 +23,75 @@ Conditional Routing
 
 * ERPNext REST API integration
 * LLM-based sales order analysis
-* Reflection-based response review
-* LangGraph state management
+* LangGraph Reflection workflow
 * Conditional routing and retry loop
 * Maximum iteration control
 * FastAPI API layer
-* Local LLM inference using Ollama
+* Gradio comparison UI
+* Local LLM inference with Ollama
+
+## Reflection
+
+The **Analyzer** generates the sales-order summary.
+
+The **Reflector** reviews the response for:
+
+* Correctness
+* Clarity
+* Consistency
+
+If the response is not approved, LangGraph routes the workflow back to the Analyzer for another attempt.
+
+```text
+Generate → Review → Decide → Retry / Terminate
+```
+
+## Gradio Demo
+
+The UI compares the same analysis:
+
+```text
+┌─────────────────────┬─────────────────────┐
+│ Without Reflection  │ With Reflection     │
+│                     │                     │
+│ Analyzer            │ Analyzer            │
+│     ↓               │     ↓               │
+│ First Answer        │ Reflector           │
+│                     │     ↓               │
+│                     │ Final Answer        │
+└─────────────────────┴─────────────────────┘
+```
+
+*Add screenshot here showing the working Gradio UI.*
 
 ## Tech Stack
 
-**Python · FastAPI · LangGraph · LangChain · Ollama · Qwen 2.5 3B · ERPNext**
+**Python · FastAPI · LangGraph · LangChain · Ollama · Qwen 2.5 3B · ERPNext · Gradio**
 
 ## Project Structure
 
 ```text
 ai-erpnext-assistant/
 ├── app/
-│   ├── api/
 │   ├── agents/
+│   ├── api/
 │   ├── erpnext/
 │   └── graph/
 ├── data/
 ├── tests/
-└── main.py
+├── main.py
+└── requirements.txt
 ```
 
-## Reflection Workflow
+## Current Status
 
-The Analyzer generates the response, while the Reflector reviews it for **correctness, clarity, and consistency**.
-
-If the response is not approved, the workflow can retry the analysis. A maximum iteration limit prevents infinite loops.
-
-## Learning Focus
-
-This implementation demonstrates practical use of:
-
-**State → Nodes → Edges → Conditional Routing → Reflection → Retry → Termination**
+* [x] ERPNext integration
+* [x] Analyzer
+* [x] Reflection
+* [x] Conditional routing
+* [x] Retry loop
+* [x] Gradio UI
+* [ ] Reflexion
+* [ ] Multi-Agent
+* [ ] Multi-Graph / Subgraphs
+* [ ] Evaluation
