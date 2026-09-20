@@ -1,6 +1,8 @@
 # AI ERPNext Business Assistant
 
 An AI-powered business assistant that connects to **ERPNext** and uses **LangGraph Reflection** to analyze, review, and improve sales-order responses.
+<img width="1527" height="871" alt="image" src="https://github.com/user-attachments/assets/cfb6b8bc-9449-437e-adaf-4b4b3ef59a3e" />
+
 
 ## Architecture
 
