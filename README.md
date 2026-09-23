@@ -2,8 +2,6 @@
 
 An AI-powered business assistant that connects to **ERPNext** and uses **LangGraph Reflection and Reflexion** to analyze, review, and improve sales-order responses.
 
-<img width="1527" height="871" alt="image" src="https://github.com/user-attachments/assets/cfb6b8bc-9449-437e-adaf-4b4b3ef59a3e" />
-
 ## Architecture
 
 ```text
@@ -55,20 +53,24 @@ The **Reflector** reviews the response for:
 * Clarity
 * Consistency
 
-If the response is not approved, the workflow generates feedback and a lesson before trying the analysis again.
+If the response is not approved, LangGraph routes the workflow through the improvement process.
 
 ```text
 Generate
    ↓
 Review
    ↓
-Feedback
+Decide
    ↓
-Lesson
-   ↓
-Improve
-   ↓
-Generate Again
+Retry / Terminate
+```
+
+### Reflection Demo
+
+Screenshot showing the Reflection workflow.
+
+```text
+<img width="1527" height="871" alt="image" src="https://github.com/user-attachments/assets/cfb6b8bc-9449-437e-adaf-4b4b3ef59a3e" />
 ```
 
 ## Reflexion
@@ -98,11 +100,19 @@ Store Previous Attempt
 Next Attempt
 ```
 
-The project uses a simple list in the LangGraph state for previous attempts. No vector database or long-term memory is required for this implementation.
+A simple list in the LangGraph state is used to store previous attempts. No vector database or long-term memory is used for this implementation.
+
+### Reflexion Demo
+
+Screenshot showing the current Reflexion workflow.
+
+```text
+[Add your Reflexion screenshot here]
+```
 
 ## Gradio Demo
 
-The UI compares the same sales-order analysis:
+The Gradio UI compares the same sales-order analysis:
 
 ```text
 ┌─────────────────────┬────────────────────────┐
@@ -122,7 +132,7 @@ The UI compares the same sales-order analysis:
 └─────────────────────┴────────────────────────┘
 ```
 
-The comparison helps demonstrate the difference between a direct LLM response and a response processed through the Reflexion workflow.
+The comparison demonstrates the difference between a direct LLM response and a response processed through the Reflexion workflow.
 
 ## Reliability Note
 
@@ -130,7 +140,7 @@ During testing, the LLM could still produce factual inconsistencies in some resp
 
 This demonstrates that Reflexion can improve the analysis process but does not guarantee factual correctness.
 
-For future reliability improvements, deterministic operations such as counting and status classification can be handled in Python, while the LLM focuses on generating the natural-language explanation. Evaluation will also be added as a separate milestone.
+Future reliability improvements will include deterministic validation and evaluation.
 
 ## Tech Stack
 
