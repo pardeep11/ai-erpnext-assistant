@@ -69,9 +69,9 @@ Retry / Terminate
 
 Screenshot showing the Reflection workflow.
 
-```text
+
 <img width="1527" height="871" alt="image" src="https://github.com/user-attachments/assets/cfb6b8bc-9449-437e-adaf-4b4b3ef59a3e" />
-```
+
 
 ## Reflexion
 
