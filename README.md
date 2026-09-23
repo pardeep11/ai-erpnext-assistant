@@ -70,7 +70,8 @@ Retry / Terminate
 Screenshot showing the Reflection workflow.
 
 
-<img width="1527" height="871" alt="AI ERPNext Assistant" src="screenshots/reflection.png" />
+<img width="1512" height="883" alt="image" src="https://github.com/user-attachments/assets/43733d76-b632-42d4-8824-a2fb49d8bd93" />
+
 
 
 ## Reflexion
@@ -106,7 +107,8 @@ A simple list in the LangGraph state is used to store previous attempts. No vect
 
 Screenshot showing the current Reflexion workflow.
 
-<img width="1652" height="700" alt="Reflexion Workflow" src="screenshots/reflexion.png" />
+<img width="1578" height="697" alt="image" src="https://github.com/user-attachments/assets/cc088645-eefe-40ca-87b9-168663b84b28" />
+
 
 ## Gradio Demo
 
