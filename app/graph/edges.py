@@ -5,4 +5,4 @@ def should_continue(state):
     if state["iteration"] >= 3:
         return "max_iterations"
 
-    return "retry"
+    return "feedback"

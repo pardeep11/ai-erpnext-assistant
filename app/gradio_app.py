@@ -9,8 +9,8 @@ sales_order_service = SalesOrderService()
 analyzer = SalesOrderAnalyzer()
 
 
-# WITHOUT REFLECTION
-def analyze_without_reflection(customer):
+# WITHOUT REFLEXION
+def analyze_without_reflexion(customer):
     orders = sales_order_service.get_sales_orders()
 
     analysis = analyzer.analyze(
@@ -21,8 +21,8 @@ def analyze_without_reflection(customer):
     return analysis
 
 
-# WITH REFLECTION
-def analyze_with_reflection(customer):
+# WITH REFLEXION
+def analyze_with_reflexion(customer):
     orders = sales_order_service.get_sales_orders()
 
     initial_state = {
@@ -32,6 +32,9 @@ def analyze_with_reflection(customer):
         "reflection": "",
         "approved": False,
         "iteration": 0,
+        "feedback": "",
+        "lesson": "",
+        "previous_attempts": [],
     }
 
     result = workflow.invoke(initial_state)
@@ -53,7 +56,7 @@ with gr.Blocks() as demo:
     with gr.Row():
 
         with gr.Column():
-            gr.Markdown("### Without Reflection")
+            gr.Markdown("### Without Reflexion")
 
             output_without = gr.Textbox(
                 label="Analyzer Output",
@@ -62,7 +65,7 @@ with gr.Blocks() as demo:
             )
 
         with gr.Column():
-            gr.Markdown("### With Reflection")
+            gr.Markdown("### With Reflexion")
 
             output_with = gr.Textbox(
                 label="Final Output",
@@ -71,13 +74,13 @@ with gr.Blocks() as demo:
             )
 
     analyze_button.click(
-        fn=analyze_without_reflection,
+        fn=analyze_without_reflexion,
         inputs=customer,
         outputs=output_without,
     )
 
     analyze_button.click(
-        fn=analyze_with_reflection,
+        fn=analyze_with_reflexion,
         inputs=customer,
         outputs=output_with,
     )

@@ -8,3 +8,6 @@ class AgentState(TypedDict):
     reflection: str
     approved: bool
     iteration: int
+    feedback: str
+    lesson: str
+    previous_attempts: list

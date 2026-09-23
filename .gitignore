@@ -34,3 +34,5 @@ Thumbs.db
 
 # FastAPI / Uvicorn
 *.pid
+*.swp
+*.swo
