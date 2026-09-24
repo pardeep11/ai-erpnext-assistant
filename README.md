@@ -5,32 +5,33 @@ An AI-powered business assistant that connects to **ERPNext** and uses **LangGra
 ## Architecture
 
 ```text
-User
-  ↓
+User Request
+    ↓
 Customer
-  ↓
+    ↓
 Sales Order Service
-  ↓
-Customer-wise ERPNext Filter
-  ↓
+    ↓
+Customer-wise ERPNext Data
+    ↓
+LangGraph State
+    ↓
 Analyzer
-  ↓
+    ↓
 Reflector
-  ↓
+    ↓
 Conditional Routing
-  ├── Approved → END
-  │
-  └── Not Approved
-          ↓
-       Feedback
-          ↓
-        Lesson
-          ↓
-   Previous Attempts
-          ↓
-       Analyzer
-          ↓
-       Reflector
+   ↙          ↘
+Approved     Not Approved
+   ↓              ↓
+  END          Feedback
+                  ↓
+                Lesson
+                  ↓
+          Previous Attempts
+                  ↓
+               Analyzer
+                  ↓
+              Reflector
 ```
 
 The workflow can repeat until the response is approved or the maximum iteration limit is reached.
