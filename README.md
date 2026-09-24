@@ -128,7 +128,8 @@ A simple list in the LangGraph state is used to store previous attempts. No vect
 
 Screenshot showing the current Reflexion workflow.
 
-<img width="1578" height="697" alt="Reflexion workflow" src="https://github.com/user-attachments/assets/cc088645-eefe-40ca-87b9-168663b84b28" />
+<img width="1522" height="717" alt="image" src="https://github.com/user-attachments/assets/7acc6404-7d81-46e4-a5d4-2df768fb47ef" />
+
 
 ## Gradio Demo
 
