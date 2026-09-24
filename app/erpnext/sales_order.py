@@ -5,11 +5,12 @@ class SalesOrderService:
     def __init__(self):
         self.client = ERPNextClient()
 
-    def get_sales_orders(self, limit=10):
+    def get_sales_orders(self, customer, limit=10):
         return self.client.get(
             "/api/resource/Sales Order",
             params={
                 "fields": '["name", "customer", "transaction_date", "status"]',
+                "filters": f'[["customer", "=", "{customer}"]]',
                 "limit_page_length": limit,
             },
         )

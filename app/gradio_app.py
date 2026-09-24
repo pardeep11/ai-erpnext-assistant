@@ -11,7 +11,7 @@ analyzer = SalesOrderAnalyzer()
 
 # WITHOUT REFLEXION
 def analyze_without_reflexion(customer):
-    orders = sales_order_service.get_sales_orders()
+    orders = sales_order_service.get_sales_orders(customer)
 
     analysis = analyzer.analyze(
         customer=customer,
@@ -23,7 +23,7 @@ def analyze_without_reflexion(customer):
 
 # WITH REFLEXION
 def analyze_with_reflexion(customer):
-    orders = sales_order_service.get_sales_orders()
+    orders = sales_order_service.get_sales_orders(customer)
 
     initial_state = {
         "customer": customer,

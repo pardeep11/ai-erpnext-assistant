@@ -1,22 +1,26 @@
 # AI ERPNext Business Assistant
 
-An AI-powered business assistant that connects to **ERPNext** and uses **LangGraph Reflection and Reflexion** to analyze, review, and improve sales-order responses.
+An AI-powered business assistant that connects to **ERPNext** and uses **LangGraph Reflection and Reflexion** to analyze, review, and improve customer-specific sales-order responses.
 
 ## Architecture
 
 ```text
-ERPNext
-   ↓
+User
+  ↓
+Customer
+  ↓
 Sales Order Service
-   ↓
+  ↓
+Customer-wise ERPNext Filter
+  ↓
 Analyzer
-   ↓
+  ↓
 Reflector
-   ↓
+  ↓
 Conditional Routing
-   ├── Approved → END
-   │
-   └── Not Approved
+  ├── Approved → END
+  │
+  └── Not Approved
           ↓
        Feedback
           ↓
@@ -26,7 +30,7 @@ Conditional Routing
           ↓
        Analyzer
           ↓
-      Reflector
+       Reflector
 ```
 
 The workflow can repeat until the response is approved or the maximum iteration limit is reached.
@@ -34,7 +38,8 @@ The workflow can repeat until the response is approved or the maximum iteration 
 ## Key Features
 
 * ERPNext REST API integration
-* LLM-based sales order analysis
+* Customer-wise sales-order retrieval
+* LLM-based sales-order analysis
 * LangGraph Reflection workflow
 * Reflexion using feedback, lessons, and previous attempts
 * Conditional routing and retry loop
@@ -42,6 +47,24 @@ The workflow can repeat until the response is approved or the maximum iteration 
 * FastAPI API layer
 * Gradio comparison UI
 * Local LLM inference with Ollama
+
+## Customer-wise Sales Order Retrieval
+
+The assistant retrieves sales orders for the requested customer instead of fetching orders from all customers.
+
+For example:
+
+```text
+Customer: Sandeep
+        ↓
+ERPNext Sales Order API
+        ↓
+Filter: customer = Sandeep
+        ↓
+Only Sandeep's Sales Orders
+```
+
+This ensures that the Analyzer receives only the relevant customer's sales-order data.
 
 ## Reflection
 
@@ -52,6 +75,7 @@ The **Reflector** reviews the response for:
 * Correctness
 * Clarity
 * Consistency
+* Unsupported claims or assumptions
 
 If the response is not approved, LangGraph routes the workflow through the improvement process.
 
@@ -69,10 +93,7 @@ Retry / Terminate
 
 Screenshot showing the Reflection workflow.
 
-
-<img width="1512" height="883" alt="image" src="https://github.com/user-attachments/assets/43733d76-b632-42d4-8824-a2fb49d8bd93" />
-
-
+<img width="1512" height="883" alt="Reflection workflow" src="https://github.com/user-attachments/assets/43733d76-b632-42d4-8824-a2fb49d8bd93" />
 
 ## Reflexion
 
@@ -107,28 +128,29 @@ A simple list in the LangGraph state is used to store previous attempts. No vect
 
 Screenshot showing the current Reflexion workflow.
 
-<img width="1578" height="697" alt="image" src="https://github.com/user-attachments/assets/cc088645-eefe-40ca-87b9-168663b84b28" />
-
+<img width="1578" height="697" alt="Reflexion workflow" src="https://github.com/user-attachments/assets/cc088645-eefe-40ca-87b9-168663b84b28" />
 
 ## Gradio Demo
 
-The Gradio UI compares the same sales-order analysis:
+The Gradio UI compares the same customer-specific sales-order analysis:
 
 ```text
 ┌─────────────────────┬────────────────────────┐
-│ Without Reflexion   │ With Reflexion          │
+│ Without Reflexion   │ With Reflexion         │
 │                     │                        │
+│ Customer            │ Customer               │
+│    ↓                │    ↓                   │
 │ Analyzer            │ Analyzer               │
-│     ↓               │     ↓                  │
+│    ↓                │    ↓                   │
 │ First Answer        │ Reflector              │
-│                     │     ↓                  │
+│                     │    ↓                   │
 │                     │ Feedback               │
-│                     │     ↓                  │
+│                     │    ↓                   │
 │                     │ Lesson                 │
-│                     │     ↓                  │
+│                     │    ↓                   │
 │                     │ Analyzer Again         │
-│                     │     ↓                  │
-│                     │ Final Answer           │
+│                     │    ↓                   │
+│                     │ Final Answer            │
 └─────────────────────┴────────────────────────┘
 ```
 
@@ -138,7 +160,7 @@ The comparison demonstrates the difference between a direct LLM response and a r
 
 During testing, the LLM could still produce factual inconsistencies in some responses, even with the Reflexion workflow.
 
-This demonstrates that Reflexion can improve the analysis process but does not guarantee factual correctness.
+This demonstrates that Reflexion can improve the analysis and review process but does not guarantee factual correctness.
 
 Future reliability improvements will include deterministic validation and evaluation.
 
@@ -165,6 +187,7 @@ ai-erpnext-assistant/
 ## Current Status
 
 * [x] ERPNext integration
+* [x] Customer-wise sales-order retrieval
 * [x] Analyzer
 * [x] Reflection
 * [x] Reflexion

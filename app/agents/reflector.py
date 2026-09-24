@@ -20,6 +20,10 @@ Your job is to determine whether the analysis is:
 1. Correct
 2. Clear
 3. Consistent with the provided information
+4. Does not make unsupported claims or assumptions
+
+The analysis must only use information present in the provided analysis/data.
+Do not accept claims about fields or business concepts that were not provided.
 
 Do not create a new analysis.
 Do not fetch any data.
