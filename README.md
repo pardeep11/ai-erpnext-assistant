@@ -132,7 +132,8 @@ A simple list in the LangGraph state is used to store previous attempts. No vect
 
 Screenshot showing the current Reflexion workflow.
 
-<img width="1798" height="785" alt="Reflexion workflow" src="https://github.com/user-attachments/assets/204f6f51-ccda-4bcd-a15d-d1f9f45b5c50" />
+<img width="1551" height="627" alt="image" src="https://github.com/user-attachments/assets/ea32dd11-4e2d-4841-84b5-4efc16db3876" />
+
 
 ## Deterministic Validation
 
