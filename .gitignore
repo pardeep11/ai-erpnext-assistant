@@ -36,3 +36,5 @@ Thumbs.db
 *.pid
 *.swp
 *.swo
+# Debug files
+debug/

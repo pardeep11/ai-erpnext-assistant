@@ -3,6 +3,7 @@ from app.agents.reflector import SalesOrderReflector
 from app.agents.feedback import FeedbackAgent
 from app.agents.lesson import LessonAgent
 from app.graph.state import AgentState
+from debug.debug_graph import log_state
 
 
 analyzer = SalesOrderAnalyzer()
@@ -11,25 +12,33 @@ feedback = FeedbackAgent()
 lesson = LessonAgent()
 
 
+
 def analyzer_node(state: AgentState):
-    analysis = analyzer.analyze(
-        customer=state["customer"],
-        orders=state["sales_orders"],
-        lesson=state["lesson"],
-        previous_attempts=state["previous_attempts"],
+    analyzer_result = analyzer.analyze(
+        state["customer"],
+        state["sales_orders"],
+        state["order_counts"],
+        state["feedback"],
+        state["lesson"],
+        state["previous_attempts"],
     )
+
+    log_state("AFTER ANALYZER", state)
 
     return {
         **state,
-        "analysis": analysis,
+        "analysis": analyzer_result,
         "iteration": state["iteration"] + 1,
     }
 
-
 def reflector_node(state: AgentState):
-    result = reflector.reflect(
-        state["analysis"]
-    )
+    result =reflector.reflect(
+        state["analysis"],
+        state["sales_orders"],
+        state["order_counts"]
+)
+    
+    log_state("AFTER REFLECTOR", state)
 
     return {
         **state,
@@ -42,6 +51,8 @@ def feedback_node(state: AgentState):
     feedback_result = feedback.generate_feedback(
         state["reflection"]
     )
+    
+    log_state(f"After FEEDBACK: {feedback_result}", state)
 
     return {
         **state,
@@ -56,14 +67,16 @@ def lesson_node(state: AgentState):
     )
 
     previous_attempts = state["previous_attempts"]
-
+    
     previous_attempts.append({
         "answer": state["analysis"],
         "critique": state["reflection"],
         "feedback": state["feedback"],
         "lesson": lesson_result,
     })
-
+    
+    log_state(f"After LESSON: {lesson_result}", state)
+    
     return {
         **state,
         "lesson": lesson_result,

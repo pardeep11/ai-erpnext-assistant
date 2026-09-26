@@ -13,21 +13,26 @@ analyzer = SalesOrderAnalyzer()
 def analyze_without_reflexion(customer):
     orders = sales_order_service.get_sales_orders(customer)
 
+    order_counts = sales_order_service.get_order_counts(orders)
+
     analysis = analyzer.analyze(
         customer=customer,
         orders=orders,
+        order_counts=order_counts,
     )
 
     return analysis
 
 
-# WITH REFLEXION
 def analyze_with_reflexion(customer):
     orders = sales_order_service.get_sales_orders(customer)
+
+    order_counts = sales_order_service.get_order_counts(orders)
 
     initial_state = {
         "customer": customer,
         "sales_orders": orders,
+        "order_counts": order_counts,
         "analysis": "",
         "reflection": "",
         "approved": False,
@@ -40,7 +45,6 @@ def analyze_with_reflexion(customer):
     result = workflow.invoke(initial_state)
 
     return result["analysis"]
-
 
 with gr.Blocks() as demo:
 

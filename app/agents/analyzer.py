@@ -8,7 +8,15 @@ class SalesOrderAnalyzer:
             temperature=0,
         )
 
-    def analyze(self, customer, orders, lesson="", previous_attempts=None):
+    def analyze(
+        self,
+        customer,
+        orders,
+        order_counts,
+        feedback="",
+        lesson="",
+        previous_attempts=None,
+    ):
         prompt = f"""
 You are a sales order assistant.
 
@@ -21,10 +29,16 @@ Customer:
 CURRENT ORDERS:
 {orders}
 
-Lesson from previous attempt:
+VERIFIED ORDER COUNTS:
+{order_counts}
+
+FEEDBACK FROM PREVIOUS REVIEW:
+{feedback}
+
+LESSON FROM PREVIOUS ATTEMPT:
 {lesson}
 
-Previous attempts:
+PREVIOUS ATTEMPTS:
 {previous_attempts}
 
 Your response must include:
@@ -34,82 +48,70 @@ Your response must include:
 - Cancelled Orders
 - A short observation
 
+IMPORTANT:
+
+The VERIFIED ORDER COUNTS were calculated by Python
+from the CURRENT ORDERS.
+
+Do NOT recalculate or change these counts.
+
+Use these values exactly:
+
+- Total Orders = order_counts["total"]
+- Completed Orders = order_counts["completed"]
+- Pending Orders = order_counts["pending"]
+- Cancelled Orders = order_counts["cancelled"]
+- Draft Orders = order_counts["draft"]
+- To Deliver Orders = order_counts["to_deliver"]
+
 STATUS DEFINITIONS:
+
 - Completed Orders: status is exactly "Completed"
 - Pending Orders: status is exactly "To Deliver and Bill"
 - Cancelled Orders: status is exactly "Cancelled"
 - Draft Orders: status is exactly "Draft"
+- To Deliver Orders: status is exactly "To Deliver"
+
+IMPORTANT:
+
+- "To Deliver" is NOT a Pending Order.
+- "To Deliver" must remain exactly "To Deliver".
+- Do not count "To Deliver" as Pending.
+- Only "To Deliver and Bill" is Pending.
 
 IMPORTANT FACTUAL ACCURACY RULES:
 
-1. CURRENT ORDERS ARE THE ONLY SOURCE OF FACTUAL INFORMATION.
-   Use only the order data provided under CURRENT ORDERS.
+1. CURRENT ORDERS are the source of truth for individual
+   order details and statuses.
 
-2. Do NOT invent, modify, remove, or assume any order information.
+2. VERIFIED ORDER COUNTS are the source of truth for
+   the numerical counts.
 
-3. Do NOT change:
+3. Do not modify the verified counts.
+
+4. Do not invent, remove, or change order information.
+
+5. Do not change:
    - Order IDs
    - Customer names
    - Order statuses
-   - Number of orders
 
-4. Counts MUST be calculated from CURRENT ORDERS.
-   - Total Orders = total number of provided orders.
-   - Completed Orders = orders with status "Completed".
-   - Pending Orders = orders with status "To Deliver and Bill".
-   - Cancelled Orders = orders with status "Cancelled".
-   - Draft Orders must NOT be counted as Pending Orders.
+6. Do not treat similar status names as equivalent.
 
-5. The status must be interpreted exactly as provided.
-   Do not treat Draft orders as Pending.
-   Do not treat any other status as Completed, Pending, or Cancelled.
+7. FEEDBACK, LESSON, and PREVIOUS ATTEMPTS may help
+   improve the response, but they must never override
+   CURRENT ORDERS or VERIFIED ORDER COUNTS.
 
-6. The short observation MUST be consistent with CURRENT ORDERS.
-   Do not make claims that are not directly supported by the current order data.
+8. The short observation must be consistent with the
+   actual order statuses.
 
-7. LESSON and PREVIOUS ATTEMPTS are NOT sources of factual information.
-   They may only be used to improve the structure, clarity, or quality of the analysis.
+9. Do not invent future actions, timelines, or outcomes.
 
-8. NEVER use a previous attempt to replace, modify, or override CURRENT ORDERS.
+10. If an order has status "To Deliver", report it as
+    "To Deliver", not Pending.
 
-9. If the current order data differs from a previous attempt,
-   always use the CURRENT ORDERS data.
-
-10. If information required for the analysis is missing,
-    explicitly state that the information is missing.
-    Do NOT guess or infer the missing information.
-
-11. Do not say that all orders have the same status unless
-    every order in CURRENT ORDERS actually has the same status.
-
-12. Do not invent completed, pending, cancelled, or draft orders.
-
-13. Before producing the final answer, verify that:
-    - Total Orders matches the number of CURRENT ORDERS.
-    - Completed count matches orders with status "Completed".
-    - Pending count matches orders with status "To Deliver and Bill".
-    - Cancelled count matches orders with status "Cancelled".
-    - The observation matches the current order data.
-
-14. Do not infer future actions, timelines, or outcomes from an order status.
-    For example, "To Deliver and Bill" means the order is pending
-    delivery and billing, but do not say it will be delivered soon,
-    will be delivered on a particular date, or will definitely be completed
-    unless that information is explicitly present in CURRENT ORDERS.
-
-15. The Short Observation must account for ALL current orders correctly.
-    Do not use vague statements such as "all other orders",
-    "the remaining orders", or similar wording if it could create
-    ambiguity or contradict the order counts.
-
-16. The Short Observation must not imply that an order has a status
-    different from its actual CURRENT ORDERS status.
-
-17. If there are multiple different statuses, explicitly describe
-    each relevant status and its count.
-
-Use the lesson and previous attempts only to improve the current analysis.
-CURRENT ORDERS always have higher priority than previous attempts or lessons.
+Use the verified Python counts and current ERPNext
+order data to produce the final response.
 
 Do not invent information.
 """

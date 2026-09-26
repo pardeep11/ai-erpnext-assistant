@@ -3,7 +3,8 @@ from typing import TypedDict
 
 class AgentState(TypedDict):
     customer: str
-    sales_orders: list
+    sales_orders: dict
+    order_counts: dict
     analysis: str
     reflection: str
     approved: bool
